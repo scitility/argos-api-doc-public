@@ -3,6 +3,8 @@
 Repository that contains the official OpenAPI definition (YML format) for the Argos API
 and the official documentation in HTML format (generated with Redoc).
 
+Read the documentation on https://scitility.github.io/argos-api-doc-public/
+
 # About Argos
 Argos is a comprehensive retraction service that empowers researchers, institutions, 
 societies, funders, and publishers to uphold the highest standards of scientific integrity. 
