@@ -1,0 +1,501 @@
+swagger: '2.0'
+info:
+  title: argos-api-v1
+  description: ' <img src=''https://www.scitility.com/static/images/templates/templates-images/logo-scitility.svg''
+    width=''150px'' /> <p>Argos API has been built from the ground up as a modern
+    API First Scientific Integrity platform. All our capabilities will be exposed
+    as Public APIs to customers that have a plan that include API Access. Argos can
+    be integrated in your tools and workflows via this API. </p> <p>In this document
+    you can find documentation about the available endpoints as well as usage examples.</p>
+    <p>The Argos API follows the best practices of REST API design.</p> '
+  version: 1.0.0
+schemes:
+- https
+host: argos-api-gateway-9xt5ivdc.nw.gateway.dev
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: x-api-key
+    in: header
+    description: Scitility provided API Key to access our services via APIs. This
+      is a unique and secret key that we should have generated only for you. If you
+      do not have one, please reach us at hello@scitility.com or read about our offering
+      at https://www.scitility.com
+security:
+- api_key: []
+paths:
+  /argos/api/v1/author:
+    get:
+      tags:
+      - author profiles
+      description: Search of retracted authors that are indexed in Argos
+      operationId: author
+      produces:
+      - application/json
+      responses:
+        200:
+          description: A successful search has been performed. See the data section
+            for results.
+          schema:
+            $ref: '#/definitions/MultipleAuthorProfileResponse'
+          examples:
+            application/json:
+              metadata:
+                timestamp: '2025-01-05T23:54:34.217184506Z'
+                parameters:
+                  name: Moslem Lari Najafi
+                resultCount: 1
+              data:
+              - bestMatchingName: Moslem Lari Najafi
+                authorProfile:
+                  ids:
+                    openAlexId: https://openalex.org/A5081680860
+                    orcid: https://orcid.org/0000-0002-4170-2792
+                  displayName: Moslem Lari Najafi
+                  displayNameAlternatives:
+                  - M. L. Najafi
+                  - Moslem Najafi
+                  - Moslem Lari Najafi
+                  institutions:
+                  - Kerman University of Medical Sciences
+                  - Sabzevar University of Medical Sciences
+                  worksCount: 55
+                  citedByCount: 706
+                  hIndex: 16.0
+                  retractedWorksCount: 1
+                  retractedWorks:
+                  - title: Method of Cumulative Anomaly Identification for Security
+                      Database Based on Discrete Markov chain
+                    journal: Security and Communication Networks
+                    publisher: Hindawi
+                    authors:
+                    - Zhiying Xu
+                    - Ting Yang
+                    - Moslem Lari Najafi
+                    originalPaperDoi: https://doi.org/10.1155/2022/5113725
+                    retractionDoi: https://doi.org/10.1155/2023/9831958
+                    originalPaperDate: '2022-03-21'
+                    retractionDate: '2023-12-06'
+                    retractionNature: Retraction
+                    reasons:
+                    - Fake Peer Review
+                    - Investigation by Journal/Publisher
+                    - Investigation by Third Party
+                    - Paper Mill
+                    - Unreliable Results
+                    notes: ''
+                    source: Retraction Watch
+                    highRisk: true
+  /argos/api/v1/author/openalexid/{openalexid}:
+    get:
+      tags:
+      - author profiles
+      description: Given an abbreviated author OpenAlex Id, returns an author profile
+        and all the retractions found for it
+      operationId: author-by-openalexid
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: openalexid
+        type: string
+        required: true
+        description: Abbreviated Open Alex ID that identifies the author you want
+          to query. Eg A5000578396. The abbreviated id is the final substring from
+          OpenAlex author identifier (https://openalex.org/authors/A5000578396 OR
+          https://openalex.org/A5000578396 should both be represented as A5000578396)
+      responses:
+        200:
+          description: Response with the Author profile found or null
+          schema:
+            $ref: '#/definitions/SingleAuthorProfileResponse'
+          examples:
+            application/json:
+              metadata:
+                timestamp: '2025-01-03T15:44:38.772302528Z'
+                parameters:
+                  openAlexId: A5000578396
+                resultCount: 1
+              data:
+                ids:
+                  openAlexId: https://openalex.org/A5000578396
+                  orcid: https://orcid.org/0000-0002-6131-2118
+                displayName: Muhammad Usman
+                displayNameAlternatives:
+                - M. Usman
+                - Muhammad Usman
+                - Muhammad Zahid Usman
+                institutions:
+                - Wuhan University
+                - Government College University, Faisalabad
+                - University of Leeds
+                - Riphah International University
+                - Huazhong University of Science and Technology
+                - University of Agriculture Faisalabad
+                - University of Management and Technology
+                - University of the Punjab
+                - University of Faisalabad
+                - Capital University of Science and Technology
+                worksCount: 146
+                citedByCount: 8778
+                hIndex: 52.0
+                retractedWorksCount: 1
+                retractedWorks:
+                - title: 'The role of monetary and fiscal policies in determining
+                    environmental pollution: Revisiting the N-shaped EKC hypothesis
+                    for China'
+                  journal: Environmental Science and Pollution Research
+                  publisher: Springer
+                  authors:
+                  - Tang Zhengxia
+                  - Mohammad Haseeb
+                  - Muhammad Usman
+                  - Mohd Shuaib
+                  - Mustafa Kamal
+                  - Mohammad Faisal Khan
+                  originalPaperDoi: https://doi.org/10.1007/s11356-023-28672-w
+                  retractionDoi: https://doi.org/10.1007/s11356-024-33020-7
+                  originalPaperDate: '2023-07-17'
+                  retractionDate: '2024-03-26'
+                  retractionNature: Retraction
+                  reasons:
+                  - Author Unresponsive
+                  - Concerns/Issues About Results
+                  - Concerns/Issues about Referencing/Attributions
+                  - Fake Peer Review
+                  - Investigation by Journal/Publisher
+                  - Randomly Generated Content
+                  - Unreliable Results
+                  notes: ''
+                  source: Retraction Watch
+                  highRisk: true
+  /argos/api/v1/author/orcid/{orcid}:
+    get:
+      tags:
+      - author profiles
+      description: Given an author abbreviated Orcid, returns an author profile and
+        all the retractions found for it
+      operationId: author-by-orcid
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: orcid
+        type: string
+        required: true
+        description: Abbreviated Orcid that identifies the author you want to query,
+          without including the https://orcig.org prefix. Eg 0000-0002-1825-0097.
+          The abbreviated id is the final substring of an Orcid (https://orcid.org/0000-0002-1825-0097
+          should be represented as 0000-0002-1825-0097)
+      responses:
+        200:
+          description: We have found an author profile associated with the Orcid.
+            The data section contains the author profile which carries the retractions
+            associated with it (if there is any).
+          schema:
+            $ref: '#/definitions/SingleAuthorProfileResponse'
+          examples:
+            application/json:
+              metadata:
+                timestamp: '2025-01-05T15:13:22.313780943Z'
+                parameters:
+                  orcid: https://orcid.org/0000-0002-1825-0097
+                resultCount: 1
+              data:
+                ids:
+                  openAlexId: https://openalex.org/A5100335963
+                  orcid: https://orcid.org/0000-0002-1825-0097
+                displayName: Josiah Carberry
+                displayNameAlternatives:
+                - Dayo S. Adesokan
+                - Anes Rafiqa Aprilya
+                - Perkasa Ginting
+                - Ika Lestari Hutasuhut
+                - "Felipe Garc\xEDa Vallejo"
+                - Mbuyu Sumbwanyambe
+                - Chitra Imelda
+                - "Chester Rodolfo Urbina Gait\xE1n"
+                - Nopalina Suyanti Damanik
+                - Emiliano Lopez
+                - Arnoldo Levy
+                - Basaria Manurung
+                - Azad Noorbakhsh
+                - Gerda Botha
+                - Anna S. Chesnokova
+                - Kseniya A. PARFENOVA
+                - Hasanuddin Hasanuddin
+                - Waliadin Waliadin
+                - Muhammad Faqih Mukaddam
+                - Lidya Natalia Br Sinuhaji
+                - "Andr\xE9 Luis do Nascimento Mont Alverne"
+                - Misbah Shakeel
+                - Franklin Espitia de la Hoz
+                - Svetlana V. RATNER
+                - Hong Liu
+                - Hery Sasongko
+                - Josiah S. Carberry
+                - Yane Ardian Rachman
+                - "Martha Cecilia Dom\xEDnguez"
+                - Sukma Widyanti
+                - "Mar\xEDa Isabel Guti\xE9rrez"
+                - Amirah Yasmin
+                - Martono Martono
+                - Isyos Sari Br Sembiring
+                - "Matheus Ant\xF4nio da Silva Sousa"
+                - Eko Yuliarti Siroj
+                - Lusia Sadarni gulo
+                - Sigit Sugiarto
+                - Richard A. Oguntoye
+                - Anies Anies
+                - Bagus Suseto Gunawan
+                - Editorial Office
+                - Adela Rahmah Ananta
+                - Putri Khairunnisa
+                - Jin Wu
+                - Heloisa Heringer Freitas
+                - Hina Fatima Memon
+                - Ninsah Mandala Putri Sembiring
+                - Muhammad Irfan Aryawiguna
+                - "Harold Sol\xEDs"
+                - Rinna Dwi Lestari
+                - Andi Subandi
+                - Isabella Borrero
+                - Iin Indarti
+                - Aprilia Maharani
+                - Bagoes Widjanarko
+                - J Carberry
+                - Julika Sinta Marito Sitorus
+                - "Miguel Vel\xE1squez"
+                - Ingka Kristina Pangaribuan
+                - Similoluwa O. Oluwalana
+                - Lidia Marselina Mau
+                - Josiah Carberry
+                - Cristiane de Jesus Santos
+                - La Ode Kaharudin
+                - Min SU
+                - Zahroh Shaluhiyah
+                - Herman Syah
+                - Randi Aritama
+                - Maria Cristalina M.D. Kehik
+                - Muhammad Khamdan
+                - Fadzlan Thoriq
+                - J. S. Carberry
+                - J. Carberry
+                - Josiah Stinkney Carberry
+                institutions:
+                - Peoples' Friendship University of Russia
+                - Health & Medical Publishing Group
+                - Ziauddin University
+                - Universidad Nacional
+                - Onderstepoort Veterinary Institute
+                - "Universidade Federal do Vale do S\xE3o Francisco"
+                - Perm State Medical Academy
+                - National Institute of Neurological Disorders and Stroke
+                - National Institutes of Health
+                - Iqra University
+                worksCount: 102
+                citedByCount: 130
+                hIndex: 8.0
+                retractedWorksCount: 0
+                retractedWorks: []
+        404:
+          description: We have been unable to find an author profile associated with
+            the Orcid.
+  /argos/api/v1/test:
+    get:
+      description: Test Endpoint to allow you to verify that you are sending correctly
+        the API Keys from your client
+      operationId: test
+      produces:
+      - application/json
+      tags:
+      - development
+      responses:
+        200:
+          description: 'Success. Your client is propagating the API Keys correctly
+
+            '
+          examples:
+            text: Test API Gateway passed
+        400:
+          description: Failure. Your client is NOT propagating the API Keys correctly
+          schema:
+            $ref: '#/definitions/Test40xresponse'
+          examples:
+            application/json:
+              message: 'INVALID_ARGUMENT: API key not valid. Please pass a valid API
+                key.
+
+                '
+              code: 400
+        401:
+          description: Failure. Your client is NOT propagating the API Keys correctly.
+          schema:
+            $ref: '#/definitions/Test40xresponse'
+          examples:
+            application/json:
+              message: 'UNAUTHENTICATED: Method doesn''t allow unregistered callers
+                (callers without established identity). Please use API Key or other
+                form of API consumer identity to call this API.
+
+                '
+              code: 401
+definitions:
+  Test40xresponse:
+    type: object
+    properties:
+      message:
+        type: string
+      code:
+        type: integer
+  SingleAuthorProfileResponse:
+    type: object
+    properties:
+      metadata:
+        type: object
+        properties:
+          timestamp:
+            type: string
+            description: Query execution timestamp. The data returned in this response
+              reflects the knowledge of Argos at this point in time.
+            format: date-time
+          parameters:
+            type: object
+            description: Map of strings with the parameters used as inputs
+            additionalProperties:
+              type: string
+          resultCount:
+            description: Number of author profiles returned. Either 1 or 0.
+            type: integer
+      data:
+        $ref: '#/definitions/AuthorProfile'
+  MultipleAuthorProfileResponse:
+    type: object
+    properties:
+      metadata:
+        type: object
+        properties:
+          timestamp:
+            type: string
+            description: Query execution timestamp. The data returned in this response
+              reflects the knowledge of Argos at this point in time.
+            format: date-time
+          parameters:
+            type: object
+            description: Map of strings with the parameters used as inputs
+            additionalProperties:
+              type: string
+          resultCount:
+            description: Number of author profiles returned. 0 or more.
+            type: integer
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/AuthorProfile'
+  AuthorProfile:
+    type: object
+    properties:
+      ids:
+        type: object
+        properties:
+          openAlexId:
+            description: Author OpenAlex ID, unique identifier of the equivalent Author
+              Profile in OpenAlex. For more information https://docs.openalex.org/api-entities/authors
+            type: string
+            format: uri
+          orcid:
+            description: Unique identifier of the equivalent Author Profile in Orcid.
+              For more information see https://support.orcid.org/hc/en-us/articles/360006897674-Structure-of-the-ORCID-Identifier#:~:text=When%20stored%2C%20the%20ORCID%20iD,xxxx%2Dxxxx%2Dxxxx).
+            type: string
+            format: uri
+      displayName:
+        type: string
+        description: Full name of the Author
+      displayNameAlternatives:
+        type: array
+        items:
+          type: string
+        description: Alternative names that have been found on the work attributed
+          to the Author
+      institutions:
+        type: array
+        items:
+          type: string
+        description: Display name of the institutions that the Author has been affiliated
+          with (limited to 10 institutions maximum)
+      worksCount:
+        type: integer
+        description: Number of works attributed to the author. Refreshed once per
+          month. Should be taking as an indication and not a precise number.
+      citedByCount:
+        type: integer
+        description: Number of citations to works attributed to the author. Refreshed
+          once per month. Should be taking as an indication and not a precise number.
+      hIndex:
+        type: integer
+        description: Author's H-Index. Refreshed once per month. Should be taking
+          as an indication and not a precise number.
+      retractedWorksCount:
+        type: integer
+        description: Number of retracted works attributed to the Author. This number
+          includes both retractions AND expressions of concern.
+      retractedWorks:
+        type: array
+        items:
+          $ref: '#/definitions/RetractedWork'
+  RetractedWork:
+    type: object
+    properties:
+      title:
+        type: string
+        description: Article Title
+      journal:
+        type: string
+        description: Display name of the Journal where the article was published
+      publisher:
+        type: string
+        description: Publisher display name
+      authors:
+        type: array
+        description: Array of Author's full names
+        items:
+          type: string
+      originalPaperDoi:
+        type: string
+        description: URI pointing to the original article / Original DOI
+        format: uri
+      retractionDoi:
+        type: string
+        description: (Optional) URI pointing to the retraction note / Retraction DOI
+        format: uri
+      originalPaperDate:
+        type: string
+        description: Publication date
+        format: date
+      retractionDate:
+        type: string
+        description: (Optional) Retraction date, if known
+        format: date
+      retractionNature:
+        type: string
+        description: 'One of the following values: "Expression of concern", "Retraction"
+
+          '
+      reasons:
+        type: array
+        description: '(Optional) If known, reasons for the retraction. Eg: Paper Mill,
+          Image Manipulation, etc.
+
+          '
+        items:
+          type: string
+      notes:
+        type: string
+        description: (Optional) Additional notes
+      source:
+        type: string
+        description: Source used by Argos to ingest this data
+      highRisk:
+        type: boolean
+        description: Whether Argos considers this retraction to be High Risk or just
+          a normal retraction.
