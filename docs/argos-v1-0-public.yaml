@@ -3,11 +3,17 @@ info:
   title: argos-api-v1
   description: ' <img src=''https://www.scitility.com/static/images/templates/templates-images/logo-scitility.svg''
     width=''150px'' /> <p>Argos API has been built from the ground up as a modern
-    API First Scientific Integrity platform. All our capabilities will be exposed
+    API-First Scientific Integrity platform. All our capabilities will be exposed
     as Public APIs to customers that have a plan that include API Access. Argos can
     be integrated in your tools and workflows via this API. </p> <p>In this document
     you can find documentation about the available endpoints as well as usage examples.</p>
-    <p>The Argos API follows the best practices of REST API design.</p> '
+    <p>The Argos API follows the best practices of REST API design. You should expect
+    every endpoint, parameter and return field documented in here to be stable. We
+    will NOT remove them or change their semantic until we release a new major version
+    of the API and we will give you enough time to transition to it. You should expect
+    this API to get new endpoints, new parameters and new return fields (API expansion)
+    on the current version and therefore your code should ignore unknown properties
+    when deserializing our responses. </p> '
   version: 1.0.0
 schemes:
 - https
@@ -29,7 +35,21 @@ paths:
       tags:
       - author profiles
       description: Search of retracted authors that are indexed in Argos
-      operationId: author
+      operationId: author-search
+      parameters:
+      - name: search
+        in: query
+        description: 'Search criteria in the format ''key:value''. Multiple criteria
+          are comma-separated. We support the following criteria:<br /> <ul> <li>name
+          (required): Author name (can be partial, eg: Johnson). Restrict the results
+          to profiles that belong to an author with a name that fuzzily match your
+          search criteria.</li>  <li>institution (optional): Author Affiliation Institution
+          name (can be partial, eg: Harvard). Restrict the results to profiles that
+          have an affiliation to that institution.</li> </ul>
+
+          '
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -43,7 +63,8 @@ paths:
               metadata:
                 timestamp: '2025-01-05T23:54:34.217184506Z'
                 parameters:
-                  name: Moslem Lari Najafi
+                  name: Moslem Lari
+                  institution: Kerman University
                 resultCount: 1
               data:
               - bestMatchingName: Moslem Lari Najafi
