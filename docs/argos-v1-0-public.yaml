@@ -43,13 +43,15 @@ paths:
           are comma-separated. We support the following criteria:<br /> <ul> <li>name
           (required): Author name (can be partial, eg: Johnson). Restrict the results
           to profiles that belong to an author with a name that fuzzily match your
-          search criteria.</li>  <li>institution (optional): Author Affiliation Institution
-          name (can be partial, eg: Harvard). Restrict the results to profiles that
-          have an affiliation to that institution.</li> </ul>
+          search criteria. Minimum Name length is 4 characters.</li>  <li>institution
+          (optional): Author Affiliation Institution name (can be partial, eg: Harvard).
+          Restrict the results to profiles that have an affiliation to that institution.</li>
+          </ul>
 
           '
         required: true
         type: string
+        example: name:Moslem Lari,institution:Kerman University
       produces:
       - application/json
       responses:
@@ -107,6 +109,15 @@ paths:
                     notes: ''
                     source: Retraction Watch
                     highRisk: true
+        400:
+          description: 'Bad request. Please check you have specified a name with at
+            least 4 characters. Eg: /author?search=name:Victoria
+
+            '
+          schema:
+            $ref: '#/definitions/Test40xresponse'
+        401:
+          $ref: '#/responses/Unauthorized'
   /argos/api/v1/author/openalexid/{openalexid}:
     get:
       tags:
@@ -190,6 +201,11 @@ paths:
                   notes: ''
                   source: Retraction Watch
                   highRisk: true
+        404:
+          description: We have been unable to find an author profile associated with
+            the OpenAlex ID.
+        401:
+          $ref: '#/responses/Unauthorized'
   /argos/api/v1/author/orcid/{orcid}:
     get:
       tags:
@@ -322,6 +338,8 @@ paths:
         404:
           description: We have been unable to find an author profile associated with
             the Orcid.
+        401:
+          $ref: '#/responses/Unauthorized'
   /argos/api/v1/test:
     get:
       description: Test Endpoint to allow you to verify that you are sending correctly
@@ -336,10 +354,13 @@ paths:
           description: 'Success. Your client is propagating the API Keys correctly
 
             '
+          schema:
+            $ref: '#/definitions/Successresponse'
           examples:
-            text: Test API Gateway passed
+            application/json:
+              message: Test API Gateway passed
         400:
-          description: Failure. Your client is NOT propagating the API Keys correctly
+          description: Failure. Your client is NOT propagating the API Keys correctly.
           schema:
             $ref: '#/definitions/Test40xresponse'
           examples:
@@ -361,7 +382,27 @@ paths:
 
                 '
               code: 401
+responses:
+  Unauthorized:
+    description: Failure. Your client is NOT propagating the API Keys correctly. Make
+      sure an x-api-key header is setup on your request and the value matches the
+      one Scitility has provided you
+    schema:
+      $ref: '#/definitions/Test40xresponse'
+    examples:
+      application/json:
+        message: 'UNAUTHENTICATED: Method doesn''t allow unregistered callers (callers
+          without established identity). Please use API Key or other form of API consumer
+          identity to call this API.
+
+          '
+        code: 401
 definitions:
+  Successresponse:
+    type: object
+    properties:
+      message:
+        type: string
   Test40xresponse:
     type: object
     properties:
