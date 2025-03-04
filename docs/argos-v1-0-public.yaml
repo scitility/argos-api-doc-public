@@ -340,6 +340,212 @@ paths:
             the Orcid.
         401:
           $ref: '#/responses/Unauthorized'
+  /argos/api/v1/doi/{shortDoi=**}:
+    get:
+      description: Retrieves the information about the DOI that is held by Argos.
+        We will return the latest information that has been collected by our data
+        pipelines, including article metadata, retractions, expressions of concern,
+        etc.
+      operationId: doi
+      parameters:
+      - in: path
+        name: shortDoi
+        type: string
+        required: true
+        description: 'Short DOI, excluding the protocol prefix (https), the host (doi.org)
+          and any port information. Example: 10.1016/j.segan.2022.100905
+
+          '
+      produces:
+      - application/json
+      tags:
+      - doi
+      responses:
+        200:
+          description: Successful response that carries the information known by Argos
+            about the requested DOI
+          schema:
+            type: object
+            properties:
+              utcResponseTime:
+                type: string
+                format: date-time
+                description: The UTC timestamp of when the response was generated.
+              doi:
+                type: string
+                format: uri
+                description: The DOI of the article being queried.
+              title:
+                type: string
+                description: The title of the article.
+              publicationDate:
+                type: string
+                format: date
+                description: The date the DOI was published.
+              authors:
+                type: array
+                description: Authorship and affiliation information
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the author.
+                    affiliation:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: The name of the institution or organization
+                              the author is affiliated with.
+                          rorId:
+                            type: string
+                            format: uri
+                            description: The ROR (Research Organization Registry)
+                              ID of the author's affiliation.
+                    identifiers:
+                      type: object
+                      properties:
+                        orcid:
+                          type: string
+                          format: uri
+                          description: The ORCID of the author.
+              articleSource:
+                type: object
+                description: Source where the DOI has been published
+                properties:
+                  name:
+                    type: string
+                    description: The name of the journal or publication where the
+                      article was published.
+                  type:
+                    type: string
+                    description: The type of the source (e.g., 'journal').
+              publisher:
+                type: string
+                description: The publisher of the article.
+              isRetracted:
+                type: boolean
+                description: Indicates if the article has been retracted.
+              isRetractionNote:
+                type: boolean
+                description: Indicates if this response is a retraction note itself.
+                  Note that some publishers use the original DOI of the article as
+                  a Retraction DOI in which case you should expect both isRetracted
+                  and isRetractionNote booleans to be true.
+              records:
+                type: array
+                description: 'Array of records related to this DOI. Records can contain
+                  retractions, expressions of concern or other updates. At the moment
+                  we are only returning the most recent record related to the DOI
+                  that has been queried.
+
+                  '
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: The type of record (e.g., 'Retraction').
+                    publicationDate:
+                      type: string
+                      format: date
+                      description: The date the record was published. If the record
+                        is of type 'Retraction', this date should be understood as
+                        the Retraction Date.
+                    reasons:
+                      type: array
+                      items:
+                        type: string
+                      description: The reasons for retraction.
+                    refersToDoi:
+                      type: string
+                      format: uri
+                      description: The DOI that this retraction refers to.
+                    recordDoi:
+                      type: string
+                      format: uri
+                      description: The DOI of the retraction record itself.
+                    recordSource:
+                      type: string
+                      description: The source of the retraction record (e.g., 'Retraction
+                        Watch').
+          examples:
+            application/json:
+              utcResponseTime: '2025-03-04T15:13:45.034988503'
+              doi: https://doi.org/10.1016/j.jclinane.2020.109727
+              title: 'RETRACTED: Transnasal humidified rapid-insufflation ventilatory
+                exchange can be utilized in tracheal stenosis caused by thyroid tumor'
+              publicationDate: '2020-01-15'
+              authors:
+              - name: Hironobu Ueshima
+                affiliation:
+                - name: Showa University Hospital
+                  rorId: https://ror.org/04wn7d698
+                identifiers:
+                  orcid: https://orcid.org/0000-0002-2533-1178
+              - name: Takahiro Goda
+                affiliation:
+                - name: Showa University Hospital
+                  rorId: https://ror.org/04wn7d698
+                identifiers:
+                  orcid: https://orcid.org/0000-0003-4196-5389
+              - name: Hiroshi Otake
+                affiliation:
+                - name: Showa University Hospital
+                  rorId: https://ror.org/04wn7d698
+                identifiers:
+                  orcid: https://orcid.org/0000-0002-4776-3211
+              articleSource:
+                name: Journal of Clinical Anesthesia
+                type: journal
+              publisher: Elsevier BV
+              isRetracted: true
+              isRetractionNote: false
+              records:
+              - type: Retraction
+                publicationDate: '2022-02-09'
+                reasons:
+                - False/Forged Authorship
+                - Misconduct by Author
+                refersToDoi: https://doi.org/10.1016/j.jclinane.2020.109727
+                recordDoi: https://doi.org/10.1016/j.jclinane.2022.110785
+                recordSource: Scitility
+        400:
+          description: Failure. Your client is NOT propagating the API Keys correctly.
+          schema:
+            $ref: '#/definitions/Test40xresponse'
+          examples:
+            application/json:
+              message: 'INVALID_ARGUMENT: API key not valid. Please pass a valid API
+                key.
+
+                '
+              code: 400
+        401:
+          description: Failure. Your client is NOT propagating the API Keys correctly.
+          schema:
+            $ref: '#/definitions/Test40xresponse'
+          examples:
+            application/json:
+              message: 'UNAUTHENTICATED: Method doesn''t allow unregistered callers
+                (callers without established identity). Please use API Key or other
+                form of API consumer identity to call this API.
+
+                '
+              code: 401
+        404:
+          description: "DOI not found. There can be several reasons for this:\n  -\
+            \ The article was published before Jan 2014. We only analyse articles\
+            \ from this date.\n  - The article has been very recently published and\
+            \ we don't have the data yet.\n  - The DOI does not exist.\n"
+          schema:
+            $ref: '#/definitions/Test404response'
+          examples:
+            application/json:
+              message: Unable to find DOI https://doi.org/not-existing
   /argos/api/v1/test:
     get:
       description: Test Endpoint to allow you to verify that you are sending correctly
@@ -410,6 +616,11 @@ definitions:
         type: string
       code:
         type: integer
+  Test404response:
+    type: object
+    properties:
+      message:
+        type: string
   SingleAuthorProfileResponse:
     type: object
     properties:
