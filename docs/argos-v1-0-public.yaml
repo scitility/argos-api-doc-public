@@ -16,7 +16,7 @@ info:
     when deserializing our responses. </p> '
   version: 1.0.0
 schemes:
-- https
+  - https
 host: argos-api-gateway-9xt5ivdc.nw.gateway.dev
 securityDefinitions:
   api_key:
@@ -28,18 +28,18 @@ securityDefinitions:
       do not have one, please reach us at hello@scitility.com or read about our offering
       at https://www.scitility.com
 security:
-- api_key: []
+  - api_key: []
 paths:
   /argos/api/v1/author:
     get:
       tags:
-      - author profiles
+        - author profiles
       description: Search of retracted authors that are indexed in Argos
       operationId: author-search
       parameters:
-      - name: search
-        in: query
-        description: 'Search criteria in the format ''key:value''. Multiple criteria
+        - name: search
+          in: query
+          description: 'Search criteria in the format ''key:value''. Multiple criteria
           are comma-separated. We support the following criteria:<br /> <ul> <li>name
           (required): Author name (can be partial, eg: Johnson). Restrict the results
           to profiles that belong to an author with a name that fuzzily match your
@@ -49,11 +49,11 @@ paths:
           </ul>
 
           '
-        required: true
-        type: string
-        example: name:Moslem Lari,institution:Kerman University
+          required: true
+          type: string
+          example: name:Moslem Lari,institution:Kerman University
       produces:
-      - application/json
+        - application/json
       responses:
         200:
           description: A successful search has been performed. See the data section
@@ -69,46 +69,46 @@ paths:
                   institution: Kerman University
                 resultCount: 1
               data:
-              - bestMatchingName: Moslem Lari Najafi
-                authorProfile:
-                  ids:
-                    openAlexId: https://openalex.org/A5081680860
-                    orcid: https://orcid.org/0000-0002-4170-2792
-                  displayName: Moslem Lari Najafi
-                  displayNameAlternatives:
-                  - M. L. Najafi
-                  - Moslem Najafi
-                  - Moslem Lari Najafi
-                  institutions:
-                  - Kerman University of Medical Sciences
-                  - Sabzevar University of Medical Sciences
-                  worksCount: 55
-                  citedByCount: 706
-                  hIndex: 16.0
-                  retractedWorksCount: 1
-                  retractedWorks:
-                  - title: Method of Cumulative Anomaly Identification for Security
-                      Database Based on Discrete Markov chain
-                    journal: Security and Communication Networks
-                    publisher: Hindawi
-                    authors:
-                    - Zhiying Xu
-                    - Ting Yang
-                    - Moslem Lari Najafi
-                    originalPaperDoi: https://doi.org/10.1155/2022/5113725
-                    retractionDoi: https://doi.org/10.1155/2023/9831958
-                    originalPaperDate: '2022-03-21'
-                    retractionDate: '2023-12-06'
-                    retractionNature: Retraction
-                    reasons:
-                    - Fake Peer Review
-                    - Investigation by Journal/Publisher
-                    - Investigation by Third Party
-                    - Paper Mill
-                    - Unreliable Results
-                    notes: ''
-                    source: Retraction Watch
-                    highRisk: true
+                - bestMatchingName: Moslem Lari Najafi
+                  authorProfile:
+                    ids:
+                      openAlexId: https://openalex.org/A5081680860
+                      orcid: https://orcid.org/0000-0002-4170-2792
+                    displayName: Moslem Lari Najafi
+                    displayNameAlternatives:
+                      - M. L. Najafi
+                      - Moslem Najafi
+                      - Moslem Lari Najafi
+                    institutions:
+                      - Kerman University of Medical Sciences
+                      - Sabzevar University of Medical Sciences
+                    worksCount: 55
+                    citedByCount: 706
+                    hIndex: 16.0
+                    retractedWorksCount: 1
+                    retractedWorks:
+                      - title: Method of Cumulative Anomaly Identification for Security
+                          Database Based on Discrete Markov chain
+                        journal: Security and Communication Networks
+                        publisher: Hindawi
+                        authors:
+                          - Zhiying Xu
+                          - Ting Yang
+                          - Moslem Lari Najafi
+                        originalPaperDoi: https://doi.org/10.1155/2022/5113725
+                        retractionDoi: https://doi.org/10.1155/2023/9831958
+                        originalPaperDate: '2022-03-21'
+                        retractionDate: '2023-12-06'
+                        retractionNature: Retraction
+                        reasons:
+                          - Fake Peer Review
+                          - Investigation by Journal/Publisher
+                          - Investigation by Third Party
+                          - Paper Mill
+                          - Unreliable Results
+                        notes: ''
+                        source: Retraction Watch
+                        highRisk: true
         400:
           description: 'Bad request. Please check you have specified a name with at
             least 4 characters. Eg: /author?search=name:Victoria
@@ -121,21 +121,21 @@ paths:
   /argos/api/v1/author/openalexid/{openalexid}:
     get:
       tags:
-      - author profiles
+        - author profiles
       description: Given an abbreviated author OpenAlex Id, returns an author profile
         and all the retractions found for it
       operationId: author-by-openalexid
       produces:
-      - application/json
+        - application/json
       parameters:
-      - in: path
-        name: openalexid
-        type: string
-        required: true
-        description: Abbreviated Open Alex ID that identifies the author you want
-          to query. Eg A5000578396. The abbreviated id is the final substring from
-          OpenAlex author identifier (https://openalex.org/authors/A5000578396 OR
-          https://openalex.org/A5000578396 should both be represented as A5000578396)
+        - in: path
+          name: openalexid
+          type: string
+          required: true
+          description: Abbreviated Open Alex ID that identifies the author you want
+            to query. Eg A5000578396. The abbreviated id is the final substring from
+            OpenAlex author identifier (https://openalex.org/authors/A5000578396 OR
+            https://openalex.org/A5000578396 should both be represented as A5000578396)
       responses:
         200:
           description: Response with the Author profile found or null
@@ -154,53 +154,53 @@ paths:
                   orcid: https://orcid.org/0000-0002-6131-2118
                 displayName: Muhammad Usman
                 displayNameAlternatives:
-                - M. Usman
-                - Muhammad Usman
-                - Muhammad Zahid Usman
+                  - M. Usman
+                  - Muhammad Usman
+                  - Muhammad Zahid Usman
                 institutions:
-                - Wuhan University
-                - Government College University, Faisalabad
-                - University of Leeds
-                - Riphah International University
-                - Huazhong University of Science and Technology
-                - University of Agriculture Faisalabad
-                - University of Management and Technology
-                - University of the Punjab
-                - University of Faisalabad
-                - Capital University of Science and Technology
+                  - Wuhan University
+                  - Government College University, Faisalabad
+                  - University of Leeds
+                  - Riphah International University
+                  - Huazhong University of Science and Technology
+                  - University of Agriculture Faisalabad
+                  - University of Management and Technology
+                  - University of the Punjab
+                  - University of Faisalabad
+                  - Capital University of Science and Technology
                 worksCount: 146
                 citedByCount: 8778
                 hIndex: 52.0
                 retractedWorksCount: 1
                 retractedWorks:
-                - title: 'The role of monetary and fiscal policies in determining
+                  - title: 'The role of monetary and fiscal policies in determining
                     environmental pollution: Revisiting the N-shaped EKC hypothesis
                     for China'
-                  journal: Environmental Science and Pollution Research
-                  publisher: Springer
-                  authors:
-                  - Tang Zhengxia
-                  - Mohammad Haseeb
-                  - Muhammad Usman
-                  - Mohd Shuaib
-                  - Mustafa Kamal
-                  - Mohammad Faisal Khan
-                  originalPaperDoi: https://doi.org/10.1007/s11356-023-28672-w
-                  retractionDoi: https://doi.org/10.1007/s11356-024-33020-7
-                  originalPaperDate: '2023-07-17'
-                  retractionDate: '2024-03-26'
-                  retractionNature: Retraction
-                  reasons:
-                  - Author Unresponsive
-                  - Concerns/Issues About Results
-                  - Concerns/Issues about Referencing/Attributions
-                  - Fake Peer Review
-                  - Investigation by Journal/Publisher
-                  - Randomly Generated Content
-                  - Unreliable Results
-                  notes: ''
-                  source: Retraction Watch
-                  highRisk: true
+                    journal: Environmental Science and Pollution Research
+                    publisher: Springer
+                    authors:
+                      - Tang Zhengxia
+                      - Mohammad Haseeb
+                      - Muhammad Usman
+                      - Mohd Shuaib
+                      - Mustafa Kamal
+                      - Mohammad Faisal Khan
+                    originalPaperDoi: https://doi.org/10.1007/s11356-023-28672-w
+                    retractionDoi: https://doi.org/10.1007/s11356-024-33020-7
+                    originalPaperDate: '2023-07-17'
+                    retractionDate: '2024-03-26'
+                    retractionNature: Retraction
+                    reasons:
+                      - Author Unresponsive
+                      - Concerns/Issues About Results
+                      - Concerns/Issues about Referencing/Attributions
+                      - Fake Peer Review
+                      - Investigation by Journal/Publisher
+                      - Randomly Generated Content
+                      - Unreliable Results
+                    notes: ''
+                    source: Retraction Watch
+                    highRisk: true
         404:
           description: We have been unable to find an author profile associated with
             the OpenAlex ID.
@@ -209,21 +209,21 @@ paths:
   /argos/api/v1/author/orcid/{orcid}:
     get:
       tags:
-      - author profiles
+        - author profiles
       description: Given an author abbreviated Orcid, returns an author profile and
         all the retractions found for it
       operationId: author-by-orcid
       produces:
-      - application/json
+        - application/json
       parameters:
-      - in: path
-        name: orcid
-        type: string
-        required: true
-        description: Abbreviated Orcid that identifies the author you want to query,
-          without including the https://orcig.org prefix. Eg 0000-0002-1825-0097.
-          The abbreviated id is the final substring of an Orcid (https://orcid.org/0000-0002-1825-0097
-          should be represented as 0000-0002-1825-0097)
+        - in: path
+          name: orcid
+          type: string
+          required: true
+          description: Abbreviated Orcid that identifies the author you want to query,
+            without including the https://orcig.org prefix. Eg 0000-0002-1825-0097.
+            The abbreviated id is the final substring of an Orcid (https://orcid.org/0000-0002-1825-0097
+            should be represented as 0000-0002-1825-0097)
       responses:
         200:
           description: We have found an author profile associated with the Orcid.
@@ -244,92 +244,92 @@ paths:
                   orcid: https://orcid.org/0000-0002-1825-0097
                 displayName: Josiah Carberry
                 displayNameAlternatives:
-                - Dayo S. Adesokan
-                - Anes Rafiqa Aprilya
-                - Perkasa Ginting
-                - Ika Lestari Hutasuhut
-                - "Felipe Garc\xEDa Vallejo"
-                - Mbuyu Sumbwanyambe
-                - Chitra Imelda
-                - "Chester Rodolfo Urbina Gait\xE1n"
-                - Nopalina Suyanti Damanik
-                - Emiliano Lopez
-                - Arnoldo Levy
-                - Basaria Manurung
-                - Azad Noorbakhsh
-                - Gerda Botha
-                - Anna S. Chesnokova
-                - Kseniya A. PARFENOVA
-                - Hasanuddin Hasanuddin
-                - Waliadin Waliadin
-                - Muhammad Faqih Mukaddam
-                - Lidya Natalia Br Sinuhaji
-                - "Andr\xE9 Luis do Nascimento Mont Alverne"
-                - Misbah Shakeel
-                - Franklin Espitia de la Hoz
-                - Svetlana V. RATNER
-                - Hong Liu
-                - Hery Sasongko
-                - Josiah S. Carberry
-                - Yane Ardian Rachman
-                - "Martha Cecilia Dom\xEDnguez"
-                - Sukma Widyanti
-                - "Mar\xEDa Isabel Guti\xE9rrez"
-                - Amirah Yasmin
-                - Martono Martono
-                - Isyos Sari Br Sembiring
-                - "Matheus Ant\xF4nio da Silva Sousa"
-                - Eko Yuliarti Siroj
-                - Lusia Sadarni gulo
-                - Sigit Sugiarto
-                - Richard A. Oguntoye
-                - Anies Anies
-                - Bagus Suseto Gunawan
-                - Editorial Office
-                - Adela Rahmah Ananta
-                - Putri Khairunnisa
-                - Jin Wu
-                - Heloisa Heringer Freitas
-                - Hina Fatima Memon
-                - Ninsah Mandala Putri Sembiring
-                - Muhammad Irfan Aryawiguna
-                - "Harold Sol\xEDs"
-                - Rinna Dwi Lestari
-                - Andi Subandi
-                - Isabella Borrero
-                - Iin Indarti
-                - Aprilia Maharani
-                - Bagoes Widjanarko
-                - J Carberry
-                - Julika Sinta Marito Sitorus
-                - "Miguel Vel\xE1squez"
-                - Ingka Kristina Pangaribuan
-                - Similoluwa O. Oluwalana
-                - Lidia Marselina Mau
-                - Josiah Carberry
-                - Cristiane de Jesus Santos
-                - La Ode Kaharudin
-                - Min SU
-                - Zahroh Shaluhiyah
-                - Herman Syah
-                - Randi Aritama
-                - Maria Cristalina M.D. Kehik
-                - Muhammad Khamdan
-                - Fadzlan Thoriq
-                - J. S. Carberry
-                - J. Carberry
-                - Josiah Stinkney Carberry
+                  - Dayo S. Adesokan
+                  - Anes Rafiqa Aprilya
+                  - Perkasa Ginting
+                  - Ika Lestari Hutasuhut
+                  - "Felipe Garc\xEDa Vallejo"
+                  - Mbuyu Sumbwanyambe
+                  - Chitra Imelda
+                  - "Chester Rodolfo Urbina Gait\xE1n"
+                  - Nopalina Suyanti Damanik
+                  - Emiliano Lopez
+                  - Arnoldo Levy
+                  - Basaria Manurung
+                  - Azad Noorbakhsh
+                  - Gerda Botha
+                  - Anna S. Chesnokova
+                  - Kseniya A. PARFENOVA
+                  - Hasanuddin Hasanuddin
+                  - Waliadin Waliadin
+                  - Muhammad Faqih Mukaddam
+                  - Lidya Natalia Br Sinuhaji
+                  - "Andr\xE9 Luis do Nascimento Mont Alverne"
+                  - Misbah Shakeel
+                  - Franklin Espitia de la Hoz
+                  - Svetlana V. RATNER
+                  - Hong Liu
+                  - Hery Sasongko
+                  - Josiah S. Carberry
+                  - Yane Ardian Rachman
+                  - "Martha Cecilia Dom\xEDnguez"
+                  - Sukma Widyanti
+                  - "Mar\xEDa Isabel Guti\xE9rrez"
+                  - Amirah Yasmin
+                  - Martono Martono
+                  - Isyos Sari Br Sembiring
+                  - "Matheus Ant\xF4nio da Silva Sousa"
+                  - Eko Yuliarti Siroj
+                  - Lusia Sadarni gulo
+                  - Sigit Sugiarto
+                  - Richard A. Oguntoye
+                  - Anies Anies
+                  - Bagus Suseto Gunawan
+                  - Editorial Office
+                  - Adela Rahmah Ananta
+                  - Putri Khairunnisa
+                  - Jin Wu
+                  - Heloisa Heringer Freitas
+                  - Hina Fatima Memon
+                  - Ninsah Mandala Putri Sembiring
+                  - Muhammad Irfan Aryawiguna
+                  - "Harold Sol\xEDs"
+                  - Rinna Dwi Lestari
+                  - Andi Subandi
+                  - Isabella Borrero
+                  - Iin Indarti
+                  - Aprilia Maharani
+                  - Bagoes Widjanarko
+                  - J Carberry
+                  - Julika Sinta Marito Sitorus
+                  - "Miguel Vel\xE1squez"
+                  - Ingka Kristina Pangaribuan
+                  - Similoluwa O. Oluwalana
+                  - Lidia Marselina Mau
+                  - Josiah Carberry
+                  - Cristiane de Jesus Santos
+                  - La Ode Kaharudin
+                  - Min SU
+                  - Zahroh Shaluhiyah
+                  - Herman Syah
+                  - Randi Aritama
+                  - Maria Cristalina M.D. Kehik
+                  - Muhammad Khamdan
+                  - Fadzlan Thoriq
+                  - J. S. Carberry
+                  - J. Carberry
+                  - Josiah Stinkney Carberry
                 institutions:
-                - Peoples' Friendship University of Russia
-                - Health & Medical Publishing Group
-                - Ziauddin University
-                - Universidad Nacional
-                - Onderstepoort Veterinary Institute
-                - "Universidade Federal do Vale do S\xE3o Francisco"
-                - Perm State Medical Academy
-                - National Institute of Neurological Disorders and Stroke
-                - National Institutes of Health
-                - Iqra University
+                  - Peoples' Friendship University of Russia
+                  - Health & Medical Publishing Group
+                  - Ziauddin University
+                  - Universidad Nacional
+                  - Onderstepoort Veterinary Institute
+                  - "Universidade Federal do Vale do S\xE3o Francisco"
+                  - Perm State Medical Academy
+                  - National Institute of Neurological Disorders and Stroke
+                  - National Institutes of Health
+                  - Iqra University
                 worksCount: 102
                 citedByCount: 130
                 hIndex: 8.0
@@ -348,18 +348,18 @@ paths:
         etc.
       operationId: doi
       parameters:
-      - in: path
-        name: shortDoi
-        type: string
-        required: true
-        description: 'Short DOI, excluding the protocol prefix (https), the host (doi.org)
+        - in: path
+          name: shortDoi
+          type: string
+          required: true
+          description: 'Short DOI, excluding the protocol prefix (https), the host (doi.org)
           and any port information. Example: 10.1016/j.segan.2022.100905
 
           '
       produces:
-      - application/json
+        - application/json
       tags:
-      - doi
+        - doi
       responses:
         200:
           description: Successful response that carries the information known by Argos
@@ -472,6 +472,63 @@ paths:
                       type: string
                       description: The source of the retraction record (e.g., 'Retraction
                         Watch').
+              riskAssessment:
+                type: object
+                description: Argos Risk Assessment. Currently based on authorship retraction history
+                  and retracted references (feet of clay).
+                properties:
+                  riskCategory:
+                    type: string
+                    description: The category of risk assigned. Possible values are
+                      'low', 'medium', 'high' or 'none' for DOIs where a risk assessment
+                      is not applicable (already retracted articles, retraction notes,
+                      etc.).
+                  authorshipRecordHistory:
+                    type: array
+                    description: History of retractions, expressions of concerns and
+                      other relevant updates associated with the authors of this DOI.
+                    items:
+                      type: object
+                      properties:
+                        authorDisplayName:
+                          type: string
+                          description: The display name of the author.
+                        historicalRecord:
+                          type: array
+                          description: Details of retraction records associated with
+                            this author.
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                description: The type of record, for example, 'Retraction',
+                                  'Expression of concern', 'Withdrawal'.
+                              publicationDate:
+                                type: string
+                                format: date
+                                description: The date when the record was published.
+                              refersToDoi:
+                                type: string
+                                format: uri
+                                description: The DOI of the paper to which this record
+                                  refers.
+                              recordDoi:
+                                type: string
+                                format: uri
+                                description: The DOI of the record itself.
+                  retractedReferences:
+                    type: array
+                    description: List of references that have been retracted and are
+                      associated with this DOI.
+                    items:
+                      type: object
+                      properties:
+                        originalPaperDoi:
+                          type: string
+                          format: uri
+                          description: The DOI of the original paper that has been
+                            retracted and that is referenced by the requested DOI.
           examples:
             application/json:
               utcResponseTime: '2025-03-04T15:13:45.034988503'
@@ -480,24 +537,24 @@ paths:
                 exchange can be utilized in tracheal stenosis caused by thyroid tumor'
               publicationDate: '2020-01-15'
               authors:
-              - name: Hironobu Ueshima
-                affiliation:
-                - name: Showa University Hospital
-                  rorId: https://ror.org/04wn7d698
-                identifiers:
-                  orcid: https://orcid.org/0000-0002-2533-1178
-              - name: Takahiro Goda
-                affiliation:
-                - name: Showa University Hospital
-                  rorId: https://ror.org/04wn7d698
-                identifiers:
-                  orcid: https://orcid.org/0000-0003-4196-5389
-              - name: Hiroshi Otake
-                affiliation:
-                - name: Showa University Hospital
-                  rorId: https://ror.org/04wn7d698
-                identifiers:
-                  orcid: https://orcid.org/0000-0002-4776-3211
+                - name: Hironobu Ueshima
+                  affiliation:
+                    - name: Showa University Hospital
+                      rorId: https://ror.org/04wn7d698
+                  identifiers:
+                    orcid: https://orcid.org/0000-0002-2533-1178
+                - name: Takahiro Goda
+                  affiliation:
+                    - name: Showa University Hospital
+                      rorId: https://ror.org/04wn7d698
+                  identifiers:
+                    orcid: https://orcid.org/0000-0003-4196-5389
+                - name: Hiroshi Otake
+                  affiliation:
+                    - name: Showa University Hospital
+                      rorId: https://ror.org/04wn7d698
+                  identifiers:
+                    orcid: https://orcid.org/0000-0002-4776-3211
               articleSource:
                 name: Journal of Clinical Anesthesia
                 type: journal
@@ -505,14 +562,29 @@ paths:
               isRetracted: true
               isRetractionNote: false
               records:
-              - type: Retraction
-                publicationDate: '2022-02-09'
-                reasons:
-                - False/Forged Authorship
-                - Misconduct by Author
-                refersToDoi: https://doi.org/10.1016/j.jclinane.2020.109727
-                recordDoi: https://doi.org/10.1016/j.jclinane.2022.110785
-                recordSource: Scitility
+                - type: Retraction
+                  publicationDate: '2022-02-09'
+                  reasons:
+                    - False/Forged Authorship
+                    - Misconduct by Author
+                  refersToDoi: https://doi.org/10.1016/j.jclinane.2020.109727
+                  recordDoi: https://doi.org/10.1016/j.jclinane.2022.110785
+                  recordSource: Scitility
+              riskAssessment:
+                riskCategory: none
+                authorshipRecordHistory:
+                  - authorDisplayName: John Smith
+                    historicalRecord:
+                      - type: Retraction
+                        publicationDate: '2024-11-13'
+                        refersToDoi: https://doi.org/10.12345/123456-789
+                        recordDoi: https://doi.org/10.12345/s41598-024-78897-z
+                      - type: Retraction
+                        publicationDate: '2024-01-29'
+                        refersToDoi: https://doi.org/10.12345/12070597
+                        recordDoi: https://doi.org/10.12345/16020191
+                retractedReferences:
+                  - originalPaperDoi: https://doi.org/10.3390/pharmaceutics12080761
         400:
           description: Failure. Your client is NOT propagating the API Keys correctly.
           schema:
@@ -552,9 +624,9 @@ paths:
         the API Keys from your client
       operationId: test
       produces:
-      - application/json
+        - application/json
       tags:
-      - development
+        - development
       responses:
         200:
           description: 'Success. Your client is propagating the API Keys correctly
