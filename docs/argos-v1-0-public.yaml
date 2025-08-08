@@ -618,6 +618,102 @@ paths:
           examples:
             application/json:
               message: Unable to find DOI https://doi.org/not-existing
+  /argos/api/v1/reference-section:
+    post:
+      tags:
+      - reference analysis
+      summary: Analyze the reference section of a scientific article
+      description: "This operation allows users to analyze the references of a scientific\
+        \ article by providing the entire reference section as a plain text input.\
+        \ \nThe analysis includes checking if each reference is retracted, has an\
+        \ expression of concern, is a retraction note, \nand evaluates its risk level.\n"
+      operationId: reference-section
+      requestBody:
+        description: A reference section (plain text in one big string)
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                referenceSection:
+                  type: string
+                  description: The reference section to analyse. Provide each reference
+                    in a new line (split by \n).
+                  example: "1. Ashouri, M., Zarei, M.M. and Moosavi, A. (2022), \"\
+                    Investigation of the effects of geometrical parameters, eccentricity\
+                    \ and perforated fins on natural convection heat transfer in a\
+                    \ finned horizontal annulus using three dimensional lattice Boltzmann\
+                    \ flux solver\", International Journal of Numerical Methods for\
+                    \ Heat & Fluid Flow, Vol. 32 No. 1, pp. 283- 312. https://doi.org/10.1108/HFF-10-2020-0629\
+                    \ \n2. Sowmya, G., B.J., G., Khan, M.I., Momani, S. and Hayat,\
+                    \ T. (2020), \"RETRACTED: Thermal investigation of fully wet longitudinal\
+                    \ porous fin of functionally graded material\", International\
+                    \ Journal of Numerical Methods for Heat & Fluid Flow, Vol. 30\
+                    \ No. 12, pp. 5087-5101. https://doi.org/10.1108/HFF-12-2019-0908\
+                    \ \n3. Koulali, A., Zi\xF3\u0142kowski, P., Radomski, P., De Sio,\
+                    \ L., Zieli\u0144ski, J., Nev\xE1rez Mart\xEDnez, M.C. and Mikielewicz,\
+                    \ D. (2025), \"Analysis of heat transfer and AuNPs-mediated photo-thermal\
+                    \ inactivation of E. coli at varying laser powers using single-phase\
+                    \ CFD modeling\", International Journal of Numerical Methods for\
+                    \ Heat & Fluid Flow, Vol. 35 No. 1, pp. 382- 413. \n4. Elshehabey,\
+                    \ H.M. (2024), \"Predicting heat transfer rate and system entropy\
+                    \ based on combining artificial neural network with numerical\
+                    \ simulation\", International Journal of Numerical Methods for\
+                    \ Heat & Fluid Flow, Vol. 34 No. 6, pp. 2480-2512."
+      responses:
+        200:
+          description: A successful reference analysis
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/definitions/ReferenceAnalysisResponse'
+          examples:
+            application/json:
+            - referenceDoi: https://doi.org/example-doi-1
+              doiFound: true
+              analysis:
+                isRetracted: true
+                hasExpressionOfConcern: false
+                isRetractionNote: false
+                isHighRisk: false
+                isMediumRisk: false
+            - referenceDoi: https://doi.org/example-doi-2
+              doiFound: true
+              analysis:
+                isRetracted: false
+                hasExpressionOfConcern: false
+                isRetractionNote: false
+                isHighRisk: false
+                isMediumRisk: true
+            - referenceDoi: https://doi.org/non-existing-doi
+              doiFound: false
+              analysis: null
+        400:
+          description: Failure. Your client is NOT propagating the API Keys correctly.
+          schema:
+            $ref: '#/definitions/Test40xresponse'
+          examples:
+            application/json:
+              message: 'INVALID_ARGUMENT: API key not valid. Please pass a valid API
+                key.
+
+                '
+              code: 400
+        401:
+          description: Failure. Your client is NOT propagating the API Keys correctly.
+          schema:
+            $ref: '#/definitions/Test40xresponse'
+          examples:
+            application/json:
+              message: 'UNAUTHENTICATED: Method doesn''t allow unregistered callers
+                (callers without established identity). Please use API Key or other
+                form of API consumer identity to call this API.
+
+                '
+              code: 401
   /argos/api/v1/references:
     post:
       tags:
