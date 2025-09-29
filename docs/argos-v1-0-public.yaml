@@ -1786,7 +1786,8 @@ paths:
       description: "This operation allows users to analyze the references of a scientific\
         \ article by providing a list of DOIs. \nThe analysis includes checking if\
         \ each reference is retracted, has an expression of concern, is a retraction\
-        \ note, \nand evaluates its risk level.\n"
+        \ note, \nand evaluates its risk level. Optionally performs a self-citation\
+        \ analysis when authors are provided.\n"
       operationId: references
       requestBody:
         description: A list of DOIs to analyze
@@ -1806,6 +1807,18 @@ paths:
                   - https://doi.org/example-doi-1
                   - https://doi.org/example-doi-2
                   - https://doi.org/non-existing-doi
+                authors:
+                  type: array
+                  description: Optional list of authors to perform self-citation analysis.
+                    If not provided, the self-citation analysis will not be performed.
+                  items:
+                    $ref: '#/definitions/ActorDefinition'
+                  example:
+                  - fullname: Author 1 Fullname
+                    orcid: https://orcid.org/0000-0001-2345-6789
+                  - fullname: Author 2 Fullname
+                    openAlexId: https://openalex.org/A123456789
+                  - fullname: Author 3 Fullname
       responses:
         200:
           description: A successful reference analysis
@@ -1825,6 +1838,12 @@ paths:
                 isRetractionNote: false
                 isHighRisk: false
                 isMediumRisk: false
+                selfCitationAnalysis:
+                  analysisPerformed: true
+                  selfCitationsFound: true
+                  authorsSelfCiting:
+                  - fullname: Author 1 Fullname
+                    orcid: https://orcid.org/0000-0001-2345-6789
             - referenceDoi: https://doi.org/example-doi-2
               doiFound: true
               analysis:
@@ -1833,6 +1852,10 @@ paths:
                 isRetractionNote: false
                 isHighRisk: false
                 isMediumRisk: true
+                selfCitationAnalysis:
+                  analysisPerformed: true
+                  selfCitationsFound: false
+                  authorsSelfCiting: []
             - referenceDoi: https://doi.org/non-existing-doi
               doiFound: false
               analysis: null
@@ -1978,6 +2001,18 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/AuthorProfile'
+  SelfCitingAuthorDefinition:
+    type: object
+    required:
+    - fullname
+    properties:
+      fullname:
+        type: string
+        description: Full name of the author as specified in the request.
+      orcid:
+        type: string
+        format: uri
+        description: Optional ORCID identifier. Echoed from the request.
   AuthorProfile:
     type: object
     properties:
@@ -2029,6 +2064,24 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/RetractedWork'
+  ActorDefinition:
+    type: object
+    required:
+    - fullname
+    properties:
+      fullname:
+        type: string
+        description: Full name of the author.
+      orcid:
+        type: string
+        format: uri
+        description: Optional ORCID identifier for the author. When available, please
+          provide it as it will improve the performance of the self-citation analysis.
+      openAlexId:
+        type: string
+        format: uri
+        description: Optional OpenAlex ID for the author. When available, please provide
+          it as it will improve the performance of the self-citation analysis.
   RetractedWork:
     type: object
     properties:
@@ -2085,6 +2138,23 @@ definitions:
         type: boolean
         description: Whether Argos considers this retraction to be High Risk or just
           a normal retraction.
+  SelfCitationAnalysis:
+    type: object
+    properties:
+      analysisPerformed:
+        type: boolean
+        description: True if the self-citation analysis was performed (i.e., authors
+          were provided in the request).
+      selfCitationsFound:
+        type: boolean
+        description: True if at least one self-citation was found for the provided
+          authors and this particular article.
+      authorsSelfCiting:
+        type: array
+        description: List of authors who were identified as self-citing for this particular
+          article.
+        items:
+          $ref: '#/definitions/SelfCitingAuthorDefinition'
   ReferenceAnalysisResponse:
     type: object
     properties:
@@ -2118,6 +2188,9 @@ definitions:
           isMediumRisk:
             type: boolean
             description: True if the reference is assessed as medium-risk by Argos.
+          selfCitationAnalysis:
+            $ref: '#/definitions/SelfCitationAnalysis'
+            description: Self-citation analysis results.
   TorturedPhrasesApiResponse:
     type: object
     properties:
