@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: argos-api-v1
-  description: ' <img src=''https://www.scitility.com/static/images/templates/templates-images/logo-scitility.svg''
+  description: ' <img src=''https://www.scitility.com/wp-content/uploads/2025/07/C_green_circle_4_scitilityBlue_medium-300x85.png''
     width=''150px'' /> <p>Argos API has been built from the ground up as a modern
     API-First Scientific Integrity platform. All our capabilities will be exposed
     as Public APIs to customers that have a plan that include API Access. Argos can
@@ -736,6 +736,7 @@ paths:
             application/json:
             - referenceDoi: https://doi.org/example-doi-1
               doiFound: true
+              likelyHallucinated: false
               analysis:
                 isRetracted: true
                 hasExpressionOfConcern: false
@@ -744,6 +745,7 @@ paths:
                 isMediumRisk: false
             - referenceDoi: https://doi.org/example-doi-2
               doiFound: true
+              likelyHallucinated: false
               analysis:
                 isRetracted: false
                 hasExpressionOfConcern: false
@@ -752,6 +754,7 @@ paths:
                 isMediumRisk: true
             - referenceDoi: https://doi.org/non-existing-doi
               doiFound: false
+              likelyHallucinated: true
               analysis: null
         400:
           description: Failure. Your client is NOT propagating the API Keys correctly.
@@ -1832,6 +1835,7 @@ paths:
             application/json:
             - referenceDoi: https://doi.org/example-doi-1
               doiFound: true
+              likelyHallucinated: false
               analysis:
                 isRetracted: true
                 hasExpressionOfConcern: false
@@ -1846,6 +1850,7 @@ paths:
                     orcid: https://orcid.org/0000-0001-2345-6789
             - referenceDoi: https://doi.org/example-doi-2
               doiFound: true
+              likelyHallucinated: false
               analysis:
                 isRetracted: false
                 hasExpressionOfConcern: false
@@ -1858,6 +1863,7 @@ paths:
                   authorsSelfCiting: []
             - referenceDoi: https://doi.org/non-existing-doi
               doiFound: false
+              likelyHallucinated: true
               analysis: null
         400:
           description: Failure. Your client is NOT propagating the API Keys correctly.
@@ -2165,6 +2171,13 @@ definitions:
       doiFound:
         type: boolean
         description: Indicates whether the DOI was found and resolvable.
+      likelyHallucinated:
+        type: boolean
+        description: Indicates whether the reference is likely hallucinated. If the
+          reference is marked as likely hallucinated, with high certainty the DOI
+          does not exist and it is likely a construction of an Artificial Intelligence
+          Model. The flag likelyHallucinated could be true only if the DOI is not
+          found. The flag will always be false if the DOI is known to Argos.
       analysis:
         type: object
         nullable: true
